@@ -5,15 +5,16 @@ import pandas as pd
 import re
 import json
 
-def download_url_content():
-    URL = "https://play.google.com/store/apps/details?id=com.fluffyfairygames.idleminertycoon&gl=DE&showAllReviews=true"  # URL is a constant is a vriable on a module level that should never be changed by code
-    html = urlopen(URL)
+def download_url_content(url):
+    html = urlopen(url)
     time.sleep(5)                                                                 # waits 5sec until webpage loads java script
     return html.read().decode("UTF-8")                                            # UTF-8 > character map
-                                                   
+ 
+URL = "https://play.google.com/store/apps/details?id=com.fluffyfairygames.idleminertycoon&gl=DE&showAllReviews=true"  # URL is a constant is a vriable on a module level that should never be changed by code
+                                                  
+data = download_url_content(url=URL)                                          # assigning to variable keeps code clean and readable
 
-def bs_parsing_data():
-    data = download_url_content()                                                 # assigning to variable keeps code clean and readable
+def bs_parsing_data(data=data):
     soup = BeautifulSoup(data, "html.parser")  
     comment_soup=soup.find("script", string=re.compile("vaf_game"))               # Every comment seems to include a type of "vaf_game" so this should work longtime
     return str(comment_soup)
